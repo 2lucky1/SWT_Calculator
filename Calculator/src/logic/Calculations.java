@@ -4,7 +4,7 @@ package logic;
 //private String sign;
 //private double secondNumber;
 //private 
-public class Calculations {
+public class Calculations implements Observer {
 	
 
 }
