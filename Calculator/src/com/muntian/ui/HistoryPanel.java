@@ -5,7 +5,9 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.List;
+import org.eclipse.swt.widgets.Listener;
 
 public class HistoryPanel extends Composite {
 
@@ -26,13 +28,27 @@ public class HistoryPanel extends Composite {
 		
 		listResults = new List(this, SWT.V_SCROLL);
 		listResults.setLayoutData(new GridData(100, 100));
-		listResults.add(TEST_ITEM);
 		
 		btnClear = new Button(this, SWT.PUSH);
 		btnClear.setText("Clear");
 		GridData gridData = new GridData(GridData.END, GridData.CENTER,false,false);
 		btnClear.setLayoutData(gridData);
 		
+		btnClear.addListener(SWT.Selection, new Listener() {
+			
+			@Override
+			public void handleEvent(Event event) {
+				switch(event.type) {
+				case SWT.Selection:
+					listResults.removeAll();
+				}
+			}
+		});
+		
+	}
+	
+	public void addStatementToHistory(String statement) {
+		listResults.add(statement);
 	}
 
 }

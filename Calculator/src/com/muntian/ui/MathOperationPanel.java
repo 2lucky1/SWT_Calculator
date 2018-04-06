@@ -1,5 +1,8 @@
 package com.muntian.ui;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
@@ -143,6 +146,18 @@ public class MathOperationPanel extends Composite {
 					mathData.setFirstOperand(Double.parseDouble(firstNumber.getText()));
 					mathData.setSecondOperand(Double.parseDouble(secondNumber.getText()));
 					mathData.setSign(sign.getText());
+					
+////					private Map getParams() {
+////						Map<String, Object> map = new HashMap<>();
+////						map.put("firstOperand", firstOperand);
+////						map.put("secondOperand", secondOperand);
+////						map.put("sign", sign);
+////						map.put("onFlyMode", isOnFlyMode);
+////						return map;
+//					
+//					Map<String, Object> params = new HashMap<>();
+//					
+//					mathData.notifyObservers(mathData.get);
 					break;
 				}
 			}
