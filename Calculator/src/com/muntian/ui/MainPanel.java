@@ -8,6 +8,8 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.*;
 
+import com.muntian.logic.MathData;
+
 public class MainPanel extends Composite {
 
 	private static final String TITLE_CALCULATOR = "Calculator";
@@ -42,5 +44,14 @@ public class MainPanel extends Composite {
 		tabItemHistory=new CTabItem(tabFolder,SWT.NONE);
 		tabItemHistory.setText(TITLE_HISTORY);
 		tabItemHistory.setControl(historyPanel);
+	}
+
+	public MathOperationPanel getMathOperationPanel() {
+		return mathOperationPanel;
+	}
+
+	
+	public HistoryPanel getHistoryPanel() {
+		return historyPanel;
 	}
 }

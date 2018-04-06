@@ -8,9 +8,7 @@ import org.eclipse.swt.widgets.Shell;
 import com.muntian.ui.MainPanel;
 
 public class Main {
-	private static final int MARGIN_RIGHT = 5;
-	private static final int MARGIN_LEFT = 5;
-	private static final int COLUMNS_NUMBER = 3;
+	
 	private static final String TITLE_OF_APP = "SWT Calculator";
 	
 	public static void main(String[] args) {
@@ -19,14 +17,14 @@ public class Main {
 		shell.setText(TITLE_OF_APP);
 		
 		GridLayout gridLayout = new GridLayout();
-		gridLayout.numColumns = COLUMNS_NUMBER;
-		gridLayout.marginLeft = MARGIN_LEFT;
-		gridLayout.marginRight = MARGIN_RIGHT;
+		gridLayout.numColumns = 5;
+		gridLayout.marginLeft = 5;
+		gridLayout.marginRight = 3;
 		
 		shell.setLayout(gridLayout);
-
-		MainPanel mainPanel = new MainPanel(shell);
 		
+		MainPanel mainPanel = new MainPanel(shell);
+
 		shell.pack();
 		shell.open();
 		while (!shell.isDisposed()) {
