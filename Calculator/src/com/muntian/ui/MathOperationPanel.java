@@ -98,15 +98,7 @@ public class MathOperationPanel extends Composite {
 
 	private void initActions() {
 
-		firstNumber.addModifyListener(new ModifyListener() {
-
-			@Override
-			public void modifyText(ModifyEvent e) {
-				if (checkBoxOnFlyMode.getSelection()) {
-					mathData.setFirstOperand(Double.parseDouble(firstNumber.getText()));
-				}
-			}
-		});
+		firstNumber.addModifyListener(new FirstOperandModifyListener());
 
 		secondNumber.addModifyListener(new ModifyListener() {
 
@@ -172,5 +164,20 @@ public class MathOperationPanel extends Composite {
 	 */
 	public void updateResultField(String text) {
 		textResult.setText(text);
+	}
+	
+	/**
+	 * 
+	 * @author MMuntian
+	 *
+	 */
+	private class FirstOperandModifyListener implements ModifyListener {
+
+		@Override
+		public void modifyText(ModifyEvent e) {
+			if (checkBoxOnFlyMode.getSelection()) {
+				mathData.setFirstOperand(Double.parseDouble(firstNumber.getText()));
+			}
+		}
 	}
 }
