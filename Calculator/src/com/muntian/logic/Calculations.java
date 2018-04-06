@@ -4,6 +4,8 @@ import java.util.Map;
 
 import org.eclipse.swt.widgets.Text;
 
+import com.muntian.ui.MainPanel;
+
 public class Calculations implements Observer {
 
 	private double firstNumber;
@@ -14,7 +16,7 @@ public class Calculations implements Observer {
 	
 	private MathData mathData;
 
-	public Calculations(Text fieldForDisplayResult, MathData mathData) {
+	public Calculations(MathData mathData) {
 		this.fieldForDisplayResult = fieldForDisplayResult;
 		
 		this.mathData = mathData;
@@ -45,7 +47,7 @@ public class Calculations implements Observer {
 				result = firstNumber*secondNumber;
 				break;
 			}
-			fieldForDisplayResult.setText(String.valueOf(result));
+			MainPanel.getInstance().getMathOperationPanel().updateResultField(String.valueOf(result));
 	}
 
 }

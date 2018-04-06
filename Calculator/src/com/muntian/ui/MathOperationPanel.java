@@ -46,7 +46,7 @@ public class MathOperationPanel extends Composite {
 		initActions();
 		
 		mathData = new MathData();
-		calculation = new Calculations(textResult, mathData);
+		calculation = new Calculations(mathData);
 	}
 
 	private void createContent(Composite parent) {
@@ -147,57 +147,15 @@ public class MathOperationPanel extends Composite {
 				}
 			}
 		});
-		
-		
-
-		// sign.addSelectionListener( new SelectionListener() {
-		//
-		// @Override
-		// public void widgetSelected(SelectionEvent e) {
-		// mathData.setSign(sign);
-		// }
-		//
-		// @Override
-		// public void widgetDefaultSelected(SelectionEvent e) {
-		// mathData.setSign(null);
-		// }
-		// });
-
-		// public void widgetSelected(SelectionEvent e) {
-		// double res;
-		// switch (sign.getText()) {
-		// case "+":
-		// res = Double.parseDouble(firstNumber.getText()) +
-		// Double.parseDouble(secondNumber.getText());
-		//
-		// break;
-		// case "-":
-		// res = Double.parseDouble(firstNumber.getText()) -
-		// Double.parseDouble(secondNumber.getText());
-		// textResult.setText("" + res);
-		// break;
-		// case "/":
-		// res = Double.parseDouble(firstNumber.getText()) /
-		// Double.parseDouble(secondNumber.getText());
-		// textResult.setText("" + res);
-		// break;
-		// case "*":
-		// res = Double.parseDouble(firstNumber.getText()) *
-		// Double.parseDouble(secondNumber.getText());
-		// textResult.setText("" + res);
-		// break;
-		// }
-		//
-		// if (checkBoxOnFlyMode.getSelection()) {
-		// textResult.setText("" + res);
-		// }
-		//
-		// }
-		// });
 
 	}
-
-	public Text getTextResult() {
-		return textResult;
+	
+	/**
+	 * This method update result field in calculator.
+	 * 
+	 * @param text
+	 */
+	public void updateResultField(String text) {
+		textResult.setText(text);
 	}
 }

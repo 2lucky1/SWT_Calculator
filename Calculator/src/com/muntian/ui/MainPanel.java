@@ -8,7 +8,7 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.*;
 
-import com.muntian.logic.MathData;
+import com.muntian.Main;
 
 public class MainPanel extends Composite {
 
@@ -21,10 +21,18 @@ public class MainPanel extends Composite {
 	
 	private MathOperationPanel mathOperationPanel;
 	private HistoryPanel historyPanel;
+	
+	private static MainPanel instance;
 
-	public MainPanel(Composite parent) {
+	private MainPanel(Composite parent) {
 		super(parent, SWT.NONE);		
 		createContent(parent);
+	}
+	
+	public static MainPanel getInstance() {
+		if (instance == null)
+            instance = new MainPanel(Main.getShell());
+        return instance;
 	}
 	
 	private void createContent(Composite parent) {
@@ -50,7 +58,6 @@ public class MainPanel extends Composite {
 		return mathOperationPanel;
 	}
 
-	
 	public HistoryPanel getHistoryPanel() {
 		return historyPanel;
 	}

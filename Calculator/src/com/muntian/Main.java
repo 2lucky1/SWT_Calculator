@@ -11,9 +11,16 @@ public class Main {
 	
 	private static final String TITLE_OF_APP = "SWT Calculator";
 	
+	private static Display display;
+	private static Shell shell;
+	
+	static {
+		display = new Display();
+		shell = new Shell(display);
+	}
+	
 	public static void main(String[] args) {
-		Display display = new Display();
-		Shell shell = new Shell(display);
+
 		shell.setText(TITLE_OF_APP);
 		
 		GridLayout gridLayout = new GridLayout();
@@ -23,7 +30,7 @@ public class Main {
 		
 		shell.setLayout(gridLayout);
 		
-		MainPanel mainPanel = new MainPanel(shell);
+		MainPanel mainPanel = MainPanel.getInstance();
 
 		shell.pack();
 		shell.open();
@@ -32,5 +39,9 @@ public class Main {
 				display.sleep();
 		}
 		display.dispose();
+	}
+	
+	public static Shell getShell() {
+		return shell;
 	}
 }
