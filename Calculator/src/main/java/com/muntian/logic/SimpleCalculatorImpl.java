@@ -11,6 +11,13 @@ public class SimpleCalculatorImpl implements Calculator {
 		creatsOperationsMap();
 	}
 
+	/**
+	 * 
+	 * @param firstNumber
+	 * @param secondNumber
+	 * @param sign
+	 * @return
+	 */
 	public double makeCalculation(double firstNumber, double secondNumber, String sign) {
 
 		MathOperation mathOperation = null;
@@ -24,25 +31,21 @@ public class SimpleCalculatorImpl implements Calculator {
 		return mathOperation.getResult(firstNumber, secondNumber);
 	}
 
-	@Override
-	public double add(double firstNumber, double secondNumber) {
-		return firstNumber + secondNumber;
-	}
-
-	@Override
-	public double sub(double firstNumber, double secondNumber) {
-		return firstNumber - secondNumber;
-	}
-
-	@Override
-	public double dev(double firstNumber, double secondNumber) {
-		return firstNumber / secondNumber;
-	}
-
-	@Override
-	public double mult(double firstNumber, double secondNumber) {
-		return firstNumber * secondNumber;
-	}
+//	public double add(double firstNumber, double secondNumber) {
+//		return firstNumber + secondNumber;
+//	}
+//
+//	public double sub(double firstNumber, double secondNumber) {
+//		return firstNumber - secondNumber;
+//	}
+//
+//	public double dev(double firstNumber, double secondNumber) {
+//		return firstNumber / secondNumber;
+//	}
+//
+//	public double mult(double firstNumber, double secondNumber) {
+//		return firstNumber * secondNumber;
+//	}
 
 	private void creatsOperationsMap() {
 		mathOperationsMap = new HashMap<>();

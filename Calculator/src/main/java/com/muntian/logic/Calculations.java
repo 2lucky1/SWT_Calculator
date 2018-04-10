@@ -11,37 +11,43 @@ public class Calculations implements Observer {
 	private double firstNumber;
 	private String sign;
 	private double secondNumber;
+	private double result;
 	private boolean isflyModeOn;
+	
+//	private MainPanel mainPanel = MainPanel.getInstance();
 
 	private MathData mathData;
-	private SimpleCalculatorImpl calculator = new SimpleCalculatorImpl();
+	private Calculator calculator;
 
-	public Calculations(MathData mathData) {
+	public Calculations(Calculator calculator) {
+		this.calculator = calculator;
+		
 
-		this.mathData = mathData;
-		mathData.registerObserver(this);
-
-		this.calculator = new SimpleCalculatorImpl();
 	}
 
 	@Override
 	public void update(Map params) {
+//		if (params.containsKey(arg0)) {
+//			throw new IllegalArgumentException("dhfklshfkljhs")
+//		}
+		
 		this.firstNumber = (double) params.get("firstOperand");
 		this.sign = (String) params.get("sign");
 		this.secondNumber = (double) params.get("secondOperand");
 		
-		calculate();
+		this.result = calculator.makeCalculation(firstNumber, secondNumber, sign);
+		setResultIntoResultField(result);
+		setResultIntoHistory(result);
 	}
-
-	private void calculate() {
-		
-		double result = calculator.makeCalculation(firstNumber, secondNumber, sign);
-
+	
+	private void setResultIntoResultField(double result) {
 		MainPanel.getInstance().getMathOperationPanel().updateResultField(String.valueOf(result));
-
-		MainPanel.getInstance().getHistoryPanel()
-				.addStatementToHistory(firstNumber + sign + secondNumber + " = " + result);
-
 	}
+	
+	private void setResultIntoHistory(double result) {
+		MainPanel.getInstance().getHistoryPanel()
+		.addStatementToHistory(firstNumber + sign + secondNumber + " = " + result);
+	}
+	
 
 }

@@ -13,6 +13,8 @@ public class MathData implements Observable {
     private Double secondOperand;
     private String sign;
     private boolean isOnFlyMode;
+    private boolean isPressedBtnCalculate;
+
 
 	@Override
 	public void registerObserver(Observer o) {
@@ -75,6 +77,11 @@ public class MathData implements Observable {
 
 	public void setOnFlyMode(boolean isOnFlyMode) {
 		this.isOnFlyMode = isOnFlyMode;
+		notifyObservers(getParams());
+	}
+	
+	public void setPressedBtnCalculate(boolean isPressedBtnCalculate) {
+		this.isPressedBtnCalculate = isPressedBtnCalculate;
 		notifyObservers(getParams());
 	}
 	

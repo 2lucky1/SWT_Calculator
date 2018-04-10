@@ -20,6 +20,7 @@ import org.eclipse.swt.widgets.Text;
 
 import com.muntian.logic.Calculations;
 import com.muntian.logic.MathData;
+import com.muntian.logic.SimpleCalculatorImpl;
 
 public class MathOperationPanel extends Composite {
 
@@ -49,7 +50,8 @@ public class MathOperationPanel extends Composite {
 		initActions();
 		
 		mathData = new MathData();
-		calculation = new Calculations(mathData);
+		calculation = new Calculations(new SimpleCalculatorImpl());
+		mathData.registerObserver(calculation);
 	}
 
 	private void createContent(Composite parent) {
@@ -135,6 +137,9 @@ public class MathOperationPanel extends Composite {
 			public void handleEvent(Event event) {
 				switch(event.type) {
 				case SWT.Selection:
+//					mathData.setPressedBtnCalculate(true);
+					
+					
 					mathData.setFirstOperand(Double.parseDouble(firstNumber.getText()));
 					mathData.setSecondOperand(Double.parseDouble(secondNumber.getText()));
 					mathData.setSign(sign.getText());
