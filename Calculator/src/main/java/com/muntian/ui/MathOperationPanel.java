@@ -18,6 +18,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Text;
 
+import com.muntian.exceptions.IncorrectInputOfNumberException;
 import com.muntian.logic.Calculations;
 import com.muntian.logic.MathData;
 import com.muntian.logic.SimpleCalculatorImpl;
@@ -33,13 +34,15 @@ public class MathOperationPanel extends Composite {
 	private MathData mathData;
 
 	private Text firstNumber;
-	private Combo sign;
+	private Combo mathOperator;
 	private Text secondNumber;
 	private Button checkBoxOnFlyMode;
 	private Label labelCalcOnTheFly;
 	private Button btnCalculate;
 	private Label labelResult;
 	private Text textResult;
+	
+	private boolean firstNumberIsCorrect = false;
 	
 	private Calculations calculation;
 
@@ -65,12 +68,12 @@ public class MathOperationPanel extends Composite {
 
 		firstNumber = new Text(this, SWT.BORDER);
 
-		sign = new Combo(this, SWT.DROP_DOWN);
-		sign.setItems(items);
+		mathOperator = new Combo(this, SWT.DROP_DOWN);
+		mathOperator.setItems(items);
 		GridData gridData = new GridData(GridData.CENTER, GridData.FILL, false, false);
 		gridData.widthHint = 50;
 		gridData.heightHint = 5;
-		sign.setLayoutData(gridData);
+		mathOperator.setLayoutData(gridData);
 
 		secondNumber = new Text(this, SWT.BORDER);
 
@@ -100,7 +103,23 @@ public class MathOperationPanel extends Composite {
 
 	private void initActions() {
 
+		
+		
+		
 		firstNumber.addModifyListener(new FirstOperandModifyListener());
+
+		firstNumber.addListener(SWT.Verify, new Listener() {
+			
+			@Override
+			public void handleEvent(Event e) {
+				try {
+					verifyInput(e.text);
+				} catch (IncorrectInputOfNumberException ex) {
+					System.out.println("verify listener has done");
+					
+				}
+			}
+		});
 
 		secondNumber.addModifyListener(new ModifyListener() {
 
@@ -112,10 +131,10 @@ public class MathOperationPanel extends Composite {
 			}
 		});
 
-		sign.addSelectionListener(new SelectionAdapter() {
+		mathOperator.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
 				if (checkBoxOnFlyMode.getSelection()) {
-					mathData.setSign(sign.getText());
+					mathData.setSign(mathOperator.getText());
 				}
 			}
 		});
@@ -137,24 +156,11 @@ public class MathOperationPanel extends Composite {
 			public void handleEvent(Event event) {
 				switch(event.type) {
 				case SWT.Selection:
-//					mathData.setPressedBtnCalculate(true);
-					
 					
 					mathData.setFirstOperand(Double.parseDouble(firstNumber.getText()));
 					mathData.setSecondOperand(Double.parseDouble(secondNumber.getText()));
-					mathData.setSign(sign.getText());
+					mathData.setSign(mathOperator.getText());
 					
-////					private Map getParams() {
-////						Map<String, Object> map = new HashMap<>();
-////						map.put("firstOperand", firstOperand);
-////						map.put("secondOperand", secondOperand);
-////						map.put("sign", sign);
-////						map.put("onFlyMode", isOnFlyMode);
-////						return map;
-//					
-//					Map<String, Object> params = new HashMap<>();
-//					
-//					mathData.notifyObservers(mathData.get);
 					break;
 				}
 			}
@@ -170,6 +176,14 @@ public class MathOperationPanel extends Composite {
 	public void updateResultField(String text) {
 		textResult.setText(text);
 	}
+
+	
+	static void verifyInput(String input) {
+		String regExp = "^(0|[1-9]\\d*)?(\\.\\d+)?(?<=\\d)$";
+		if(!input.matches(regExp)) {
+			throw new IncorrectInputOfNumberException("Incorrect input of number: " + input + ". Input decimal number");
+		}
+	}
 	
 	/**
 	 * 
@@ -181,6 +195,7 @@ public class MathOperationPanel extends Composite {
 		@Override
 		public void modifyText(ModifyEvent e) {
 			if (checkBoxOnFlyMode.getSelection()) {
+				System.out.println("Modify listener!!");
 				mathData.setFirstOperand(Double.parseDouble(firstNumber.getText()));
 			}
 		}

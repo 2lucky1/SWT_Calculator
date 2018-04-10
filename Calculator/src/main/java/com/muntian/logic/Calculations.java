@@ -9,7 +9,7 @@ import com.muntian.ui.MainPanel;
 public class Calculations implements Observer {
 
 	private double firstNumber;
-	private String sign;
+	private String mathOperator;
 	private double secondNumber;
 	private double result;
 	private boolean isflyModeOn;
@@ -32,10 +32,10 @@ public class Calculations implements Observer {
 //		}
 		
 		this.firstNumber = (double) params.get("firstOperand");
-		this.sign = (String) params.get("sign");
+		this.mathOperator = (String) params.get("sign");
 		this.secondNumber = (double) params.get("secondOperand");
 		
-		this.result = calculator.makeCalculation(firstNumber, secondNumber, sign);
+		this.result = calculator.makeCalculation(firstNumber, secondNumber, mathOperator);
 		setResultIntoResultField(result);
 		setResultIntoHistory(result);
 	}
@@ -46,7 +46,7 @@ public class Calculations implements Observer {
 	
 	private void setResultIntoHistory(double result) {
 		MainPanel.getInstance().getHistoryPanel()
-		.addStatementToHistory(firstNumber + sign + secondNumber + " = " + result);
+		.addStatementToHistory(firstNumber + mathOperator + secondNumber + " = " + result);
 	}
 	
 
