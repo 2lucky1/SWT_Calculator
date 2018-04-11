@@ -79,7 +79,7 @@ public class MathData implements Observable {
 		this.isOnFlyMode = isOnFlyMode;
 		notifyObservers(getParams());
 	}
-	
+
 	public void setPressedBtnCalculate(boolean isPressedBtnCalculate) {
 		this.isPressedBtnCalculate = isPressedBtnCalculate;
 		notifyObservers(getParams());

@@ -29,7 +29,7 @@ public class Calculations implements Observer {
 	public void update(Map params) {
 //		if (params.containsKey(arg0)) {
 //			throw new IllegalArgumentException("dhfklshfkljhs")
-//		}
+//		} 
 		
 		this.firstNumber = (double) params.get("firstOperand");
 		this.mathOperator = (String) params.get("sign");

@@ -29,7 +29,7 @@ public class MathOperationPanel extends Composite {
 	private static final String CALCULATE = "Calculate";
 	private static final String CALCULATE_ON_THE_FLY = "Calculate on the fly";
 
-	private static final String[] items = new String[] { "+", "-", "/", "*", " " };
+	private static final String[] items = new String[] { "+", "-", "/", "*" };
 
 	private MathData mathData;
 
@@ -41,17 +41,20 @@ public class MathOperationPanel extends Composite {
 	private Button btnCalculate;
 	private Label labelResult;
 	private Text textResult;
-	
+
 	private boolean firstNumberIsCorrect = false;
-	
+
 	private Calculations calculation;
+
+	private static int numberOfSign = 0;
+	// private static boolean pointIsAdded = false;
 
 	public MathOperationPanel(Composite parent) {
 		super(parent, SWT.NONE);
 
 		createContent(parent);
 		initActions();
-		
+
 		mathData = new MathData();
 		calculation = new Calculations(new SimpleCalculatorImpl());
 		mathData.registerObserver(calculation);
@@ -103,20 +106,17 @@ public class MathOperationPanel extends Composite {
 
 	private void initActions() {
 
-		
-		
-		
 		firstNumber.addModifyListener(new FirstOperandModifyListener());
 
 		firstNumber.addListener(SWT.Verify, new Listener() {
-			
+
 			@Override
 			public void handleEvent(Event e) {
-				try {
-					verifyInput(e.text);
-				} catch (IncorrectInputOfNumberException ex) {
-					System.out.println("verify listener has done");
-					
+				if (verifyInputNumber(e)||e.character==8) {
+					System.out.println("All is good");
+				} else {
+					e.doit = false;
+					System.out.println("incorrect input");
 				}
 			}
 		});
@@ -149,25 +149,25 @@ public class MathOperationPanel extends Composite {
 				}
 			}
 		});
-		
+
 		btnCalculate.addListener(SWT.Selection, new Listener() {
-			
+
 			@Override
 			public void handleEvent(Event event) {
-				switch(event.type) {
+				switch (event.type) {
 				case SWT.Selection:
-					
+
 					mathData.setFirstOperand(Double.parseDouble(firstNumber.getText()));
 					mathData.setSecondOperand(Double.parseDouble(secondNumber.getText()));
 					mathData.setSign(mathOperator.getText());
-					
+
 					break;
 				}
 			}
 		});
 
 	}
-	
+
 	/**
 	 * This method update result field in calculator.
 	 * 
@@ -177,14 +177,30 @@ public class MathOperationPanel extends Composite {
 		textResult.setText(text);
 	}
 
-	
-	static void verifyInput(String input) {
-		String regExp = "^(0|[1-9]\\d*)?(\\.\\d+)?(?<=\\d)$";
-		if(!input.matches(regExp)) {
-			throw new IncorrectInputOfNumberException("Incorrect input of number: " + input + ". Input decimal number");
+	private boolean verifyInputNumber(Event e) {
+		String wholNumber = firstNumber.getText();
+		String input = e.text;
+		if(e.character==8) {
+			return true;
+		}else if ((wholNumber.length() == 0) && input.equals("-")) {
+			return true;
+		} else if (wholNumber.length() != 0 && !pointIsAdded(wholNumber) && input.equals(".")) {
+			return true;
+		} else {
+			try {
+				double digit = Double.parseDouble(input);
+			} catch (NumberFormatException nfe) {
+				return false;
+			}
 		}
+
+		return true;
 	}
-	
+
+	private boolean pointIsAdded(String number) {
+		return number.indexOf(".") >= 0;
+	}
+
 	/**
 	 * 
 	 * @author MMuntian

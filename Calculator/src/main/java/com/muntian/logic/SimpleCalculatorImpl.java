@@ -13,40 +13,27 @@ public class SimpleCalculatorImpl implements Calculator {
 
 	/**
 	 * 
-	 * @param firstNumber
-	 * @param secondNumber
-	 * @param sign
-	 * @return
+	 * @param firstNumber - first number which takes part in operation
+	 * @param secondNumber - second number which takes part in operation
+	 * @param mathOperator - a sign that denotes a mathematical action with numbers 
+	 * @return result of operation
 	 */
-	public double makeCalculation(double firstNumber, double secondNumber, String sign) {
+	public double makeCalculation(double firstNumber, double secondNumber, String mathOperator ) {
 
 		MathOperation mathOperation = null;
 
-		if (mathOperationsMap.containsKey(sign)) {
-			mathOperation = mathOperationsMap.get(sign);
+		if (mathOperationsMap.containsKey(mathOperator)) {
+			mathOperation = mathOperationsMap.get(mathOperator);
 		} else {
 			System.out.println("Invalid sign");
 		}
 	
-		return mathOperation.getResult(firstNumber, secondNumber);
+		return mathOperation.calculateResult(firstNumber, secondNumber);
 	}
 
-//	public double add(double firstNumber, double secondNumber) {
-//		return firstNumber + secondNumber;
-//	}
-//
-//	public double sub(double firstNumber, double secondNumber) {
-//		return firstNumber - secondNumber;
-//	}
-//
-//	public double dev(double firstNumber, double secondNumber) {
-//		return firstNumber / secondNumber;
-//	}
-//
-//	public double mult(double firstNumber, double secondNumber) {
-//		return firstNumber * secondNumber;
-//	}
-
+	/**
+	 * 
+	 */
 	private void creatsOperationsMap() {
 		mathOperationsMap = new HashMap<>();
 		mathOperationsMap.put("+", new MathOperationAdd());

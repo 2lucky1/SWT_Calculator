@@ -2,6 +2,6 @@ package com.muntian.logic;
 
 public interface MathOperation {
 
-	double getResult(double firstNumber, double secondNumber);
+	double calculateResult(double firstNumber, double secondNumber);
 
 }
