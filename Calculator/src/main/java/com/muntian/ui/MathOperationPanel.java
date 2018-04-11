@@ -106,30 +106,13 @@ public class MathOperationPanel extends Composite {
 
 	private void initActions() {
 
-		firstNumber.addModifyListener(new FirstOperandModifyListener());
+		firstNumber.addModifyListener(getModifyListenerForOperands(firstNumber));
 
-		firstNumber.addListener(SWT.Verify, new Listener() {
+		firstNumber.addListener(SWT.Verify, getVerifyListenerForOperand(firstNumber, false));
 
-			@Override
-			public void handleEvent(Event e) {
-				if (verifyInputNumber(e)||e.character==8) {
-					System.out.println("All is good");
-				} else {
-					e.doit = false;
-					System.out.println("incorrect input");
-				}
-			}
-		});
+		secondNumber.addModifyListener(getModifyListenerForOperands(secondNumber));
 
-		secondNumber.addModifyListener(new ModifyListener() {
-
-			@Override
-			public void modifyText(ModifyEvent e) {
-				if (checkBoxOnFlyMode.getSelection()) {
-					mathData.setSecondOperand(Double.parseDouble(secondNumber.getText()));
-				}
-			}
-		});
+		secondNumber.addListener(SWT.Verify, getVerifyListenerForOperand(secondNumber, true));
 
 		mathOperator.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
@@ -177,12 +160,15 @@ public class MathOperationPanel extends Composite {
 		textResult.setText(text);
 	}
 
-	private boolean verifyInputNumber(Event e) {
+	private boolean verifyInputNumber(Event e, boolean isSecondOperand) {
 		String wholNumber = firstNumber.getText();
 		String input = e.text;
-		if(e.character==8) {
+		String sign = mathOperator.getText();
+		if (isSecondOperand && e.character == 48 && sign.equals("/") && sign != null) {
+			return false;
+		} else if (e.character == 8) {
 			return true;
-		}else if ((wholNumber.length() == 0) && input.equals("-")) {
+		} else if ((wholNumber.length() == 0) && input.equals("-")) {
 			return true;
 		} else if (wholNumber.length() != 0 && !pointIsAdded(wholNumber) && input.equals(".")) {
 			return true;
@@ -206,14 +192,31 @@ public class MathOperationPanel extends Composite {
 	 * @author MMuntian
 	 *
 	 */
-	private class FirstOperandModifyListener implements ModifyListener {
 
-		@Override
-		public void modifyText(ModifyEvent e) {
-			if (checkBoxOnFlyMode.getSelection()) {
-				System.out.println("Modify listener!!");
-				mathData.setFirstOperand(Double.parseDouble(firstNumber.getText()));
+	Listener getVerifyListenerForOperand(Text operand, boolean isSecondOperand) {
+		return new Listener() {
+			@Override
+			public void handleEvent(Event e) {
+				if (verifyInputNumber(e, isSecondOperand) || e.character == 8) {
+					System.out.println("All is good");
+				} else {
+					e.doit = false;
+					System.out.println("incorrect input");
+				}
 			}
-		}
+		};
 	}
+
+	ModifyListener getModifyListenerForOperands(Text operand) {
+		return new ModifyListener() {
+			@Override
+			public void modifyText(ModifyEvent e) {
+				if (checkBoxOnFlyMode.getSelection()) {
+					System.out.println("Modify listener!!");
+					mathData.setFirstOperand(Double.parseDouble(operand.getText()));
+				}
+			}
+		};
+	}
+
 }
