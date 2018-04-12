@@ -11,10 +11,9 @@ import org.eclipse.swt.widgets.Listener;
 
 public class HistoryPanel extends Composite {
 
-	private static final String TEST_ITEM = "TestItem";
+	private static final String CLEAR = "Clear";
 	private List listResults;
 	private Button btnClear;
-//	private RowLayout rowLayout;
 	
 	public HistoryPanel(Composite parent) {
 		super(parent, SWT.NONE);
@@ -26,11 +25,11 @@ public class HistoryPanel extends Composite {
 		setLayout(new GridLayout(1, false));
 		setBackground(parent.getShell().getBackground());
 		
-		listResults = new List(this, SWT.V_SCROLL);
-		listResults.setLayoutData(new GridData(100, 100));
+		listResults = new List(this, SWT.V_SCROLL | SWT.BORDER);
+		listResults.setLayoutData(new GridData(240, 210));
 		
 		btnClear = new Button(this, SWT.PUSH);
-		btnClear.setText("Clear");
+		btnClear.setText(CLEAR);
 		GridData gridData = new GridData(GridData.END, GridData.CENTER,false,false);
 		btnClear.setLayoutData(gridData);
 		

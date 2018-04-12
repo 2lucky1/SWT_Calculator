@@ -25,16 +25,13 @@ public class Main {
 		shell.setText(TITLE_OF_APP);
 		
 		GridLayout gridLayout = new GridLayout();
-		gridLayout.numColumns = 5;
-		gridLayout.marginLeft = 5;
-		gridLayout.marginRight = 3;
-		
 		shell.setLayout(gridLayout);
 		
 		MainPanel mainPanel = MainPanel.getInstance();
 
-		shell.pack();
+//		
 		shell.setLocation(750, 200);
+		shell.pack();
 		shell.open();
 		while (!shell.isDisposed()) {
 			if (!display.readAndDispatch())

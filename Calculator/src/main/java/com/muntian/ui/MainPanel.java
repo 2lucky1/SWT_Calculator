@@ -3,10 +3,9 @@ package com.muntian.ui;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CTabFolder;
 import org.eclipse.swt.custom.CTabItem;
-import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.*;
+import org.eclipse.swt.widgets.Composite;
 
 import com.muntian.Main;
 
@@ -25,7 +24,7 @@ public class MainPanel extends Composite {
 	private static MainPanel instance;
 
 	private MainPanel(Composite parent) {
-		super(parent, SWT.NONE);		
+		super(parent, SWT.BORDER);		
 		createContent(parent);
 	}
 	
@@ -36,16 +35,20 @@ public class MainPanel extends Composite {
 	}
 	
 	private void createContent(Composite parent) {
-		tabFolder=new CTabFolder(parent, SWT.NONE);
-		tabFolder.setSize(new Point(970,380));
-		tabFolder.setLayout(new GridLayout(1,false));
-		tabFolder.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
+		tabFolder=new CTabFolder(MainPanel.this, SWT.BORDER);
+		GridLayout gridLayout = new GridLayout(1,false);
+		tabFolder.setLayout(gridLayout);
+		
+		GridData gridData = new GridData(SWT.FILL,SWT.FILL,true,true);
+		tabFolder.setLayoutData(gridData);
+		tabFolder.setSize(280, 280);
 
 		mathOperationPanel = new MathOperationPanel(tabFolder);
 		
 		tabItemCalc=new CTabItem(tabFolder,SWT.NONE);
 		tabItemCalc.setText(TITLE_CALCULATOR);
 		tabItemCalc.setControl(mathOperationPanel);
+	
 		
 		historyPanel = new HistoryPanel(tabFolder);
 		

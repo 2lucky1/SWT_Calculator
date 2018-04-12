@@ -55,8 +55,8 @@ public class MathOperationPanel extends Composite {
 
 		setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 		GridLayout gridLayout = new GridLayout(3, false);
-		gridLayout.verticalSpacing = 80;
-		gridLayout.horizontalSpacing = 15;
+		gridLayout.verticalSpacing = 85;
+		gridLayout.horizontalSpacing = 18;
 		setLayout(gridLayout);
 		setBackground(parent.getShell().getBackground());
 
@@ -67,6 +67,7 @@ public class MathOperationPanel extends Composite {
 		GridData gridData = new GridData(GridData.CENTER, GridData.FILL, false, false);
 		gridData.widthHint = 50;
 		gridData.heightHint = 5;
+		gridData.minimumHeight = 200;
 		mathOperator.setLayoutData(gridData);
 
 		secondNumber = new Text(this, SWT.BORDER);
@@ -83,7 +84,9 @@ public class MathOperationPanel extends Composite {
 		btnCalculate = new Button(this, SWT.PUSH);
 		btnCalculate.setText(CALCULATE);
 		gridData = new GridData(GridData.FILL, GridData.FILL, true, true);
-		gridData.horizontalIndent = 15;
+		gridData.horizontalIndent = 10;
+		gridData.minimumWidth = 50;
+		gridData.minimumHeight = 5;
 		btnCalculate.setLayoutData(gridData);
 
 		labelResult = new Label(this, SWT.NONE);
