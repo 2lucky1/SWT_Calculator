@@ -17,9 +17,9 @@ public class Calculations implements Observer {
 //	private MainPanel mainPanel = MainPanel.getInstance();
 
 	private MathData mathData;
-	private Calculator calculator;
+	private AbstractCalculator calculator;
 
-	public Calculations(Calculator calculator) {
+	public Calculations(AbstractCalculator calculator) {
 		this.calculator = calculator;
 		
 
