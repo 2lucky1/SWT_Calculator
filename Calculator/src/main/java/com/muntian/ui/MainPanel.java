@@ -36,7 +36,7 @@ public class MainPanel extends Composite {
 	}
 	
 	private void createContent(Composite parent) {
-		tabFolder=new CTabFolder(parent, SWT.BORDER);
+		tabFolder=new CTabFolder(parent, SWT.NONE);
 		tabFolder.setSize(new Point(970,380));
 		tabFolder.setLayout(new GridLayout(1,false));
 		tabFolder.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));

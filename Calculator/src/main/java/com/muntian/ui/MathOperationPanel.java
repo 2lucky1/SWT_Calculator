@@ -1,8 +1,5 @@
 package com.muntian.ui;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
@@ -18,7 +15,6 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Text;
 
-import com.muntian.exceptions.IncorrectInputOfNumberException;
 import com.muntian.logic.Calculations;
 import com.muntian.logic.MathData;
 import com.muntian.logic.SimpleCalculatorImpl;
@@ -42,12 +38,7 @@ public class MathOperationPanel extends Composite {
 	private Label labelResult;
 	private Text textResult;
 
-	private boolean firstNumberIsCorrect = false;
-
 	private Calculations calculation;
-
-	private static int numberOfSign = 0;
-	// private static boolean pointIsAdded = false;
 
 	public MathOperationPanel(Composite parent) {
 		super(parent, SWT.NONE);
@@ -106,19 +97,19 @@ public class MathOperationPanel extends Composite {
 
 	private void initActions() {
 
-		firstNumber.addModifyListener(getModifyListenerForOperands(firstNumber));
+		firstNumber.addModifyListener(new ModifyListenerForOperands());
 
-		firstNumber.addListener(SWT.Verify, getVerifyListenerForOperand(firstNumber, false));
+		firstNumber.addListener(SWT.Verify, new VerifyListenerForOperand());
 
-		secondNumber.addModifyListener(getModifyListenerForOperands(secondNumber));
+		secondNumber.addModifyListener(new ModifyListenerForOperands());
 
-		secondNumber.addListener(SWT.Verify, getVerifyListenerForOperand(secondNumber, true));
+		secondNumber.addListener(SWT.Verify, new VerifyListenerForOperand());
 
-		mathOperator.addSelectionListener(getSelectionAdapterForMathOperator());
+		mathOperator.addSelectionListener(new SelectionAdapterForMathOperator());
 
-		checkBoxOnFlyMode.addSelectionListener(getSelectionAdapterForCheckBox());
+		checkBoxOnFlyMode.addSelectionListener(new SelectionAdapterForCheckBox());
 
-		btnCalculate.addListener(SWT.Selection, getListenerForButtonCalculate());
+		btnCalculate.addListener(SWT.Selection, new ListenerForButtonCalculate());
 
 	}
 
@@ -131,13 +122,11 @@ public class MathOperationPanel extends Composite {
 		textResult.setText(text);
 	}
 
-	private boolean verifyInputNumber(Event e, boolean isSecondOperand) {
-		String wholNumber = firstNumber.getText();
+	private boolean verifyInputNumber(Event e) {
+		Text widget = (Text) e.widget;
+		String wholNumber = widget.getText();
 		String input = e.text;
-		String sign = mathOperator.getText();
-		if (isSecondOperand && e.character == 48 && sign.equals("/") && sign != null) {
-			return false;
-		} else if (e.character == 8) {
+		if (e.character == 8) {
 			return true;
 		} else if ((wholNumber.length() == 0) && input.equals("-")) {
 			return true;
@@ -158,98 +147,68 @@ public class MathOperationPanel extends Composite {
 		return number.indexOf(".") >= 0;
 	}
 
-	/**
-	 * 
-	 * @param operand - a concrete operand (first or second)
-	 * @param isSecondOperand - boolean parameter to check situation with division by zero
-	 * @return listener for input field of specified operand
-	 */
-
-	Listener getVerifyListenerForOperand(Text operand, boolean isSecondOperand) {
-		return new Listener() {
-			@Override
-			public void handleEvent(Event e) {
-				if (verifyInputNumber(e, isSecondOperand) || e.character == 8) {
-					System.out.println("All is good");
-				} else {
-					e.doit = false;
-					System.out.println("incorrect input");
-				}
+	private class VerifyListenerForOperand implements Listener {
+		@Override
+		public void handleEvent(Event e) {
+			if (verifyInputNumber(e) || e.character == 8) {
+				System.out.println("All is good");
+			} else {
+				e.doit = false;
+				System.out.println("incorrect input");
 			}
-		};
+		}
+	}
+
+	private class ModifyListenerForOperands implements ModifyListener {
+		@Override
+		public void modifyText(ModifyEvent e) {
+			Text widget = (Text) e.widget;
+			String operand = widget.getText();
+			if (checkBoxOnFlyMode.getSelection()) {
+				System.out.println("Modify listener!!");
+				mathData.setFirstOperand(Double.parseDouble(operand));
+			}
+		}
+	}
+
+	private class SelectionAdapterForMathOperator extends SelectionAdapter {
+
+		@Override
+		public void widgetSelected(SelectionEvent e) {
+			if (checkBoxOnFlyMode.getSelection()) {
+				mathData.setSign(mathOperator.getText());
+			}
+		}
 	}
 
 	
-	/**
-	 * 
-	 * @param operand - a concrete operand (first or second)
-	 * @return listener for for verification of operands input
-	 */
-	ModifyListener getModifyListenerForOperands(Text operand) {
-		return new ModifyListener() {
-			@Override
-			public void modifyText(ModifyEvent e) {
-				if (checkBoxOnFlyMode.getSelection()) {
-					System.out.println("Modify listener!!");
-					mathData.setFirstOperand(Double.parseDouble(operand.getText()));
-				}
+	private class SelectionAdapterForCheckBox extends SelectionAdapter {
+
+		@Override
+		public void widgetSelected(SelectionEvent e) {
+			mathData.setOnFlyMode(checkBoxOnFlyMode.getSelection());
+			if (checkBoxOnFlyMode.getSelection()) {
+				btnCalculate.setEnabled(false);
+			} else {
+				btnCalculate.setEnabled(true);
 			}
-		};
+		}
 	}
 	
-	
-	/**
-	 * 
-	 * @return adapter to track math operator selection
-	 */
-	SelectionAdapter getSelectionAdapterForMathOperator() {
-		return new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent e) {
-				if (checkBoxOnFlyMode.getSelection()) {
-					mathData.setSign(mathOperator.getText());
-				}
+	private class ListenerForButtonCalculate implements Listener{
+		
+		@Override
+		public void handleEvent(Event event) {
+			switch (event.type) {
+			case SWT.Selection:
+
+				mathData.setFirstOperand(Double.parseDouble(firstNumber.getText()));
+				mathData.setSecondOperand(Double.parseDouble(secondNumber.getText()));
+				mathData.setSign(mathOperator.getText());
+
+				break;
 			}
-		};
-	}
-	
-	/**
-	 * 
-	 * @return adapter to track "on fly" mode selection
-	 */
-	SelectionAdapter getSelectionAdapterForCheckBox() {
-		return new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent e) {
-				mathData.setOnFlyMode(checkBoxOnFlyMode.getSelection());
-				if (checkBoxOnFlyMode.getSelection()) {
-					btnCalculate.setEnabled(false);
-				} else {
-					btnCalculate.setEnabled(true);
-				}
-			}
-		};
-	}
-
-	/**
-	 * Tracks click on button "Calculate" and set values of first operand,
-	 * second operand and math operator to according fields in MathData 
-	 * object (model of Observer pattern) 
-	 * @return listener for button 
-	 */
-	Listener getListenerForButtonCalculate() {
-		return new Listener() {
-
-			@Override
-			public void handleEvent(Event event) {
-				switch (event.type) {
-				case SWT.Selection:
-
-					mathData.setFirstOperand(Double.parseDouble(firstNumber.getText()));
-					mathData.setSecondOperand(Double.parseDouble(secondNumber.getText()));
-					mathData.setSign(mathOperator.getText());
-
-					break;
-				}
-			}
-		};
+		}
 	}
 }
+
