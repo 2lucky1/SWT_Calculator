@@ -1,7 +1,6 @@
 package com.muntian;
 
 import org.eclipse.swt.SWT;
-//import org.eclipse.swt.layout.*;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
@@ -29,7 +28,6 @@ public class Main {
 		
 		MainPanel mainPanel = MainPanel.getInstance();
 
-//		
 		shell.setLocation(750, 200);
 		shell.pack();
 		shell.open();

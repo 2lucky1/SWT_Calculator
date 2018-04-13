@@ -17,6 +17,7 @@ import org.eclipse.swt.widgets.Text;
 
 import com.muntian.logic.Calculations;
 import com.muntian.logic.MathData;
+import com.muntian.logic.MathOperation;
 import com.muntian.logic.SimpleCalculatorImpl;
 
 public class MathOperationPanel extends Composite {
@@ -99,21 +100,13 @@ public class MathOperationPanel extends Composite {
 	}
 
 	private void initActions() {
-
-		firstNumber.addModifyListener(new ModifyListenerForOperands());
-
+		firstNumber.addModifyListener(new ModifyListenerForFirstOperand());
 		firstNumber.addListener(SWT.Verify, new VerifyListenerForOperand());
-
-		secondNumber.addModifyListener(new ModifyListenerForOperands());
-
+		secondNumber.addModifyListener(new ModifyListenerForSecondOperand());
 		secondNumber.addListener(SWT.Verify, new VerifyListenerForOperand());
-
 		mathOperator.addSelectionListener(new SelectionAdapterForMathOperator());
-
 		checkBoxOnFlyMode.addSelectionListener(new SelectionAdapterForCheckBox());
-
 		btnCalculate.addListener(SWT.Selection, new ListenerForButtonCalculate());
-
 	}
 
 	/**
@@ -131,7 +124,7 @@ public class MathOperationPanel extends Composite {
 		String input = e.text;
 		if (e.character == 8) {
 			return true;
-		} else if ((wholNumber.length() == 0) && input.equals("-")) {
+		} else if ((wholNumber.length() == 0) && input.equals(MathOperation.MINUS)) {
 			return true;
 		} else if (wholNumber.length() != 0 && !pointIsAdded(wholNumber) && input.equals(".")) {
 			return true;
@@ -162,7 +155,7 @@ public class MathOperationPanel extends Composite {
 		}
 	}
 
-	private class ModifyListenerForOperands implements ModifyListener {
+	private class ModifyListenerForFirstOperand implements ModifyListener {
 		@Override
 		public void modifyText(ModifyEvent e) {
 			Text widget = (Text) e.widget;
@@ -170,6 +163,18 @@ public class MathOperationPanel extends Composite {
 			if (checkBoxOnFlyMode.getSelection()) {
 				System.out.println("Modify listener!!");
 				mathData.setFirstOperand(Double.parseDouble(operand));
+			}
+		}
+	}
+	
+	private class ModifyListenerForSecondOperand implements ModifyListener {
+		@Override
+		public void modifyText(ModifyEvent e) {
+			Text widget = (Text) e.widget;
+			String operand = widget.getText();
+			if (checkBoxOnFlyMode.getSelection()) {
+				System.out.println("Modify listener!!");
+				mathData.setSecondOperand(Double.parseDouble(operand));
 			}
 		}
 	}
